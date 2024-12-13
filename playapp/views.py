@@ -188,7 +188,7 @@ def delete_video(request, pk):
 @api_view(['get'])
 def resendAllInfo(request,keyGo):
    UserSell=Userinfo.objects.get(userid=keyGo)
-   TaskSell=Task.objects.get(idUser=keyGo)
+   # TaskSell=Task.objects.get(idUser=keyGo)
    VideoSell=MissionVM.objects.get(user_id=keyGo)
    recapUserInfo={
        'Info': UserSell.isvideoMaker,
@@ -212,19 +212,19 @@ def resendAllInfo(request,keyGo):
       bigcont.append(dt)                        
       print(UserSell)
 
-   recapTask={
-       'Task':TaskSell.titre,
-       'status':TaskSell.status,
-       'progression':TaskSell.progression,
-       'recompense':TaskSell.recompense,
-       'Type':TaskSell.Type,
-   }
+   # recapTask={
+   #     'Task':TaskSell.titre,
+   #     'status':TaskSell.status,
+   #     'progression':TaskSell.progression,
+   #     'recompense':TaskSell.recompense,
+   #     'Type':TaskSell.Type,
+   # }
    link={
-       'ShareLink':str(request.get_host())+"YOUTUBE/MySharing--Link/reward/"+str(keyGo)
+       'ShareLink':str(request.get_host())+"/YOUTUBE/MySharing--Link/reward/"+str(keyGo)
    }
 
    return JsonResponse({'data':{'firstdegree':recapUserInfo,
-                                'seconddegree':recapTask,
+                                # 'seconddegree':recapTask,
                                 'third':link,
                                 'all':bigcont,}})
 
