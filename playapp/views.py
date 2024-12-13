@@ -31,6 +31,9 @@ class RegisterView(APIView):
             user=serializer.save()
             Userinfobis=Userinfo.objects.create(user=user,userid=user.id,Username=serializer.validated_data['username'])
             Userinfobis.save()
+            UserVM=MissionVM.objects.create(user=user,userid=user.id)
+            UserVM.save()
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
