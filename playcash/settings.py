@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  
-    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
     'playapp',
     'corsheaders',
     
@@ -117,6 +117,7 @@ DATABASES = {
         'HOST': 'dpg-ctd2ojt2ng1s73fturu0-a.oregon-postgres.render.com',
         'PORT': '5432',
         
+
     }
 }
 
