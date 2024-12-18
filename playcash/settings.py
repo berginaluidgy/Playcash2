@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+# from psycopg2._psycopg import BINARY, NUMBER, STRING, DATETIME, ROWID
 from pathlib import Path
 DROPBOX_ACCESS_TOKEN = 'sl.CAdEqWaJ8Vo52agStmp1URbKlaaHDW5Kw3PFyS76MMNUj3nXUrwHVYPCMH4tgfRkUjDlJVaDgWoo5YR7LiZPRT0ckwYy3A_pwkjp3RWSI15SOwWa86P95GWYYaIH9_usxwOYNE_UHM_BKe8oe6z0Eeg'
 
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',  
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',
     'playapp',
     'corsheaders',
     
@@ -109,10 +110,32 @@ WSGI_APPLICATION = 'playcash.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'playcashbd',  # Nom de la base
+        'USER': 'playcashbd_user',
+        'PASSWORD': 'sZFuF9wcXiyRm5hLRQ7utudijOULbMFx',
+        'HOST': 'dpg-ctd2ojt2ng1s73fturu0-a.oregon-postgres.render.com',
+        'PORT': '5432',
+        
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
 
 
 # Password validation
