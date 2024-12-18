@@ -75,17 +75,7 @@ REST_FRAMEWORK = {
     #     'custom': '10/hour',  # Exemple d'une limite personnalisée
     # }
 }
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:5173",  # Origine du frontend
-#     "http://127.0.0.1:5173",  # Si le frontend utilise 127.0.0.1
-# ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-# ]
-
-# # Si vous utilisez des cookies pour l'authentification :
-# CORS_ALLOW_CREDENTIALS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
