@@ -179,3 +179,17 @@ class askDIDICEL(models.Model):
     date=models.DateField(default= datetime.datetime.now)
     status=models.CharField(default='',max_length=256)
     NumeroT=models.IntegerField(default=0)
+
+
+
+
+
+
+
+class UserPoints(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="points")
+    points = models.IntegerField(default=0)  # Total des points de l'utilisateur
+    updated_at = models.DateTimeField(auto_now=True)  # Date de la dernière mise à jour
+
+    def __str__(self):
+        return f"{self.user.username} - {self.points} points"

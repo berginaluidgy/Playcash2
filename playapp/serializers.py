@@ -54,3 +54,14 @@ class AskDIDICELSerializer(serializers.ModelSerializer):
     class Meta:
         model = askDIDICEL
         fields = '__all__'
+
+
+
+from .models import UserPoints
+
+class UserPointsSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')  # Inclure le nom d'utilisateur
+
+    class Meta:
+        model = UserPoints
+        fields = ['username', 'points']

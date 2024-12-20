@@ -1,7 +1,7 @@
 
 from django.urls import path
 from .views import AskDIDICELView, UserInteractionView, Views,linky,Tasklink,sendinfoTiktok,list_videos,RegisterView,ModelsUserafterToken,resendAllInfo,pullMoney
-from .views import defineLINK,SHAREYUTUBECHANNEL,SHAREYUTUBEVIDEO, chooseMissionOne, admin_statistics, AddYouTubeChannel,issuccesViewYoutubevideo,requestMoneysend,DIGICELGET
+from .views import add_point,UserPointsListView,defineLINK,SHAREYUTUBECHANNEL,SHAREYUTUBEVIDEO, chooseMissionOne, admin_statistics, AddYouTubeChannel,issuccesViewYoutubevideo,requestMoneysend,DIGICELGET
 from . import views
 urlpatterns = [
     path('Views',Views),
@@ -30,5 +30,7 @@ path('digicelget/',DIGICELGET),
   path('ask-didicel/', AskDIDICELView.as_view(), name='ask_didicel'),
     path('ask-didicel/<int:user_id>/', AskDIDICELView.as_view(), name='check_didicel'),
 
+  path('api/user-points/', UserPointsListView.as_view(), name='user-points'),
+ path('api/add-points/', add_point, name='add-points'),
 
 ]

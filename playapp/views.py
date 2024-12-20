@@ -674,3 +674,85 @@ class AskDIDICELView(APIView):
             "video_count": video_count,
             "can_request": result
         }, status=status.HTTP_200_OK)
+
+
+
+@api_view(['get'])
+def DIGICELGET(request):
+     varis=request.data.get('isacctop')
+     if varis ==True:
+         return Response({'status':True})
+     else:
+         return Response({'status':False})
+
+
+
+
+
+from rest_framework.generics import ListAPIView
+from .models import UserPoints
+from .serializers import UserPointsSerializer
+
+class UserPointsListView(ListAPIView):
+    """
+    Retourne la liste des utilisateurs triés par points (du plus élevé au plus bas).
+    """
+    queryset = UserPoints.objects.all().order_by('-points')  # Tri décroissant
+    serializer_class = UserPointsSerializer
+
+
+
+REWARD_AMOUNT = 1000  # En gourdes
+from datetime import datetime, timedelta
+from django.utils import timezone 
+@api_view(['POST'])
+def add_point(request):
+    """
+    Endpoint qui ajoute un point à un utilisateur.
+    Si c'est dimanche, il remet les points à zéro et retourne les 5 gagnants.
+    """
+    try:
+        # Obtenir l'utilisateur depuis la requête
+        user_id = request.data.get("user_id")
+        if not user_id:
+            return Response({"error": "user_id est requis."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = User.objects.get(id=user_id)
+        user_points, created = UserPoints.objects.get_or_create(user=user)
+
+        # Ajouter un point à l'utilisateur
+        user_points.points += 1
+        user_points.save()
+
+        # Vérifier si c'est dimanche
+        now = timezone.now()
+        if now.weekday() == 6:  # Dimanche = 6 dans datetime.weekday()
+            # Obtenir les 5 meilleurs utilisateurs
+            top_users = UserPoints.objects.order_by("-points")[:5]
+            winners = []
+            for rank, winner in enumerate(top_users, start=1):
+                winners.append({
+                    "rank": rank,
+                    "username": winner.user.username,
+                    "points": winner.points,
+                    "reward": REWARD_AMOUNT
+                })
+            
+            # Réinitialiser les points pour tous les utilisateurs
+            UserPoints.objects.all().update(points=0, updated_at=now)
+
+            return Response({
+                "message": "C'est dimanche! Les points ont été remis à zéro.",
+                "winners": winners
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "message": "1 point ajouté avec succès!",
+            "user": user.username,
+            "total_points": user_points.points
+        }, status=status.HTTP_200_OK)
+
+    except User.DoesNotExist:
+        return Response({"error": "Utilisateur non trouvé."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
