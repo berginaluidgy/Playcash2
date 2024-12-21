@@ -756,3 +756,31 @@ def add_point(request):
         return Response({"error": "Utilisateur non trouvé."}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import User, Mission, Video, SocialAccount
+from django.db.models import Count
+from datetime import date, timedelta
+
+class DashboardDataView(APIView):
+    def get(self, request):
+        today = date.today()
+        last_24_hours = today - timedelta(days=1)
+
+        data = {
+            "total_users": User.objects.count(),
+            "users_with_careers": User.objects.filter(career__isnull=False).count(),
+            "missions_created": Mission.objects.count(),
+            "daily_signups": User.objects.filter(date_joined__gte=last_24_hours).count(),
+            "user_logins": User.objects.filter(last_login__gte=last_24_hours).count(),
+            "videos_uploaded": Video.objects.count(),
+            "social_accounts": SocialAccount.objects.count(),
+            "users_with_social_accounts": User.objects.annotate(social_count=Count('socialaccount')).filter(social_count__gte=1).count(),
+        }
+        return Response(data, status=status.HTTP_200_OK)
