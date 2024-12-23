@@ -1,7 +1,18 @@
 import random
 import requests
-def videoLink():
-        
+from django.contrib.auth.models import User
+from .models import YouTubeVideoRead
+def videoLink(userid):
+
+    try:
+         # Récupérer l'utilisateur par ID
+        user = User.objects.get(id=userid)
+    except User.DoesNotExist:
+        user = User.objects.get(id=11) 
+        # Filtrer les vidéos pour cet utilisateur
+    videos = YouTubeVideoRead.objects.filter(user=user)
+    videos_list = list(videos)
+    vid=[video.video_id for video in videos_list]
     url = "https://yt-api.p.rapidapi.com/channel/videos"
     groupe=['UCVEukooN7ci__E1Ng2H1eTQ']
     result=[]
@@ -20,12 +31,22 @@ def videoLink():
         tableVieos=exp['data']
         print(exp)
         for tb in tableVieos:
-            title=tb['title']
+            
+ 
+            
             id=tb['videoId']
+            isview=False
+            if id in vid:
+                isview=True
+
+
+            title=tb['title']
+
             viewCount=tb['viewCount']
             len=tb['lengthText']
             vCInt=int(viewCount)
             resuSubs={
+                'isview':isview,
                 "title":title,
                 "id":id,
                 'videoID':'https://www.youtube.com/watch?v='+id,

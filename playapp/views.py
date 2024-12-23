@@ -51,8 +51,9 @@ def ModelsUserafterToken(request):
 DROPBOX_ACCESS_TOKEN = os.getenv("DROPBOX_ACCESS_TOKEN")
 
 @api_view(['GET'])
-def Views(request):
-    rt=videoLink()
+def Views(request,user_id):
+    
+    rt=videoLink(user_id)
     return Response(rt)
 
 # @api_view(['GET'])

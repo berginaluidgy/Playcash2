@@ -4,7 +4,7 @@ from .views import AskDIDICELView, UserInteractionView, Views,linky,Tasklink,sen
 from .views import add_point,UserPointsListView,defineLINK,SHAREYUTUBECHANNEL,SHAREYUTUBEVIDEO, chooseMissionOne, admin_statistics, AddYouTubeChannel,issuccesViewYoutubevideo,requestMoneysend,DIGICELGET
 from . import views
 urlpatterns = [
-    path('Views',Views),
+    path('Views/<int:user_id>',Views),
      path('linky',linky),
       path('LinkTask',Tasklink),
         path('tiktokInfo',sendinfoTiktok),
