@@ -65,8 +65,8 @@ def Views(request,user_id):
 
 
 @api_view(['GET'])
-def linky(request):
-    rt=linkSUb()
+def linky(request,userid):
+    rt=linkSUb(userid)
     return Response(rt)
 
 
@@ -715,12 +715,14 @@ def add_point(request):
     try:
         # Obtenir l'utilisateur depuis la requête
         user_id = request.data.get("user_id")
+        print(user_id,'1')
         if not user_id:
             return Response({"error": "user_id est requis."}, status=status.HTTP_400_BAD_REQUEST)
         
         user = User.objects.get(id=user_id)
+        print(user,'2')
         user_points, created = UserPoints.objects.get_or_create(user=user)
-
+        print(user_points,'3')
         # Ajouter un point à l'utilisateur
         user_points.points += 1
         user_points.save()

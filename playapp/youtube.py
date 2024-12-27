@@ -1,7 +1,7 @@
 import random
 import requests
 from django.contrib.auth.models import User
-from .models import YouTubeVideoRead
+from .models import YouTubeVideoRead,link
 def videoLink(userid):
 
     try:
@@ -14,7 +14,7 @@ def videoLink(userid):
     videos_list = list(videos)
     vid=[video.video_id for video in videos_list]
     url = "https://yt-api.p.rapidapi.com/channel/videos"
-    groupe=['UCVEukooN7ci__E1Ng2H1eTQ']
+    groupe=['UCVEukooN7ci__E1Ng2H1eTQ','UCY0A59H5CZ7AoD6R1TGpd1w']
     result=[]
     for gr in groupe:
         querystring = {"id":gr}
@@ -64,7 +64,17 @@ def videoLink(userid):
 
 
 
-def linkSUb():
+def linkSUb(userid):
+    try:
+         # Récupérer l'utilisateur par ID
+        user = User.objects.get(id=userid)
+    except User.DoesNotExist:
+        user = User.objects.get(id=11) 
+        # Filtrer les vidéos pour cet utilisateur
+    linkk = link.objects.filter(user=user)
+    link_list = list(linkk)
+    lin=[lk.link_url for lk in link_list]
+    print(lin,'undeux')
     links = [
         "UCVEukooN7ci__E1Ng2H1eTQ", 'UC8UPeuldn_DH_HZvnpbXNFw', 'UC8eTYhTx-ioM-wNsiL3LRcA',
         'UChPGFU7DUz_4lZrCQWHRmhA', 'UCEZYoCqin-cZpHrZ8D-TB_Q', 'UCToxeYp9hpBRpWVCfwyjZIQ',
@@ -94,8 +104,13 @@ def linkSUb():
 
         # Extraction avec gestion des clés manquantes
         subscriber_count = res.get('subscriberCount', 0)
-
+        issubs=False
+        
+        if ("https://www.youtube.com/channel/"+lk+"?sub_confirmation=1") in lin:
+            issubs=True
+  
         champ = {
+            'issubs':issubs,
             'nbrS': subscriber_count,
             'nbrFocus': 100000,
             'subscash': random.randint(5, 10),

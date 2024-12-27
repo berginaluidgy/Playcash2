@@ -5,7 +5,7 @@ from .views import add_point,UserPointsListView,defineLINK,SHAREYUTUBECHANNEL,SH
 from . import views
 urlpatterns = [
     path('Views/<int:user_id>',Views),
-     path('linky',linky),
+     path('linky<int:userid>',linky),
       path('LinkTask',Tasklink),
         path('tiktokInfo',sendinfoTiktok),
  path('videos/', views.list_videos, name='list_videos'),
