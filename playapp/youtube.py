@@ -14,7 +14,7 @@ def videoLink(userid):
     videos_list = list(videos)
     vid=[video.video_id for video in videos_list]
     url = "https://yt-api.p.rapidapi.com/channel/videos"
-    groupe=['UCVEukooN7ci__E1Ng2H1eTQ','UCY0A59H5CZ7AoD6R1TGpd1w']
+    groupe=['UCY0A59H5CZ7AoD6R1TGpd1w']
     result=[]
     for gr in groupe:
         querystring = {"id":gr}
